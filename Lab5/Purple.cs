@@ -257,18 +257,18 @@ namespace Lab5
 
             // code here
             int n = matrix.GetLength(0),
+                m = matrix.GetLength(1),
                 mxi = 0,
-                mxj = 0,
-                m = matrix.GetLength(1);
+                mxj = 0;
             if (n != m || k >= n || k < 0)
             {
                 return;
             }
-            int[] arr = new int[n];
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
                 {
+
                     if (Math.Abs(matrix[i, j]) > Math.Abs(matrix[mxi, mxj]))
                     {
                         mxi = i;
@@ -276,36 +276,41 @@ namespace Lab5
                     }
                 }
             }
-            while (mxj != k)
-            {
-                for (int i = 0; i < n; i++)
-                {
-                    for (int j = 0; j < n; j++)
-                    {
-                        arr[(j + 1) % n] = matrix[i, j];
-                    }
-                    for (int j = 0; j < n; j++)
-                    {
-                        matrix[i, j] = arr[j];
-                    }
-                }
-                mxj = (mxj + 1) % n;
-            }
-            while (mxi != k)
+
+            while (mxi < k)
             {
                 for (int j = 0; j < n; j++)
                 {
-                    for (int i = 0; i < n; i++)
-                    {
-                        arr[(i + 1) % n] = matrix[i, j];
-                    }
-                    for (int i = 0; i < n; i++)
-                    {
-                        matrix[i, j] = arr[i];
-                    }
+                    (matrix[mxi, j], matrix[mxi + 1, j]) = (matrix[mxi + 1, j], matrix[mxi, j]);
                 }
-                mxi = (mxi + 1) % n;
+                mxi++;
             }
+            while (mxi > k)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    (matrix[mxi, j], matrix[mxi - 1, j]) = (matrix[mxi - 1, j], matrix[mxi, j]);
+                }
+                mxi--;
+            }
+
+            while (mxj < k)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    (matrix[i, mxj], matrix[i, mxj + 1]) = (matrix[i, mxj + 1], matrix[i, mxj]);
+                }
+                mxj++;
+            }
+            while (mxj > k)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    (matrix[i, mxj], matrix[i, mxj - 1]) = (matrix[i, mxj - 1], matrix[i, mxj]);
+                }
+                mxj--;
+            }
+            
             // end
 
         }
